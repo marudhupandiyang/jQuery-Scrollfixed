@@ -1,65 +1,22 @@
 (function( $ ){
 
-  $.fn.containedStickyScroll = function( options ) {
+  $.fn.fixedScroll = function( ) {
   
-	var defaults = {  
-		oSelector : this.selector,
-		unstick : true,
-		easing: 'linear',
-		duration: 500,
-		queue: true,
-		closeChar: '^',
-		closeTop: 0,
-		closeRight: 0  
-	}  
+	var defaults = {objSelected : this.selector}  
                   
-	var options =  $.extend(defaults, options);
+	var getProp =  $.extend(defaults);
   
-	if(options.unstick == true){  
-		this.css('position','relative');
-		this.append('<a class="scrollFixIt">' + options.closeChar + '</a>');
-		jQuery(options.oSelector + ' .scrollFixIt').css('position','absolute');
-		jQuery(options.oSelector + ' .scrollFixIt').css('top',options.closeTop + 'px');
-		jQuery(options.oSelector + ' .scrollFixIt').css('right',options.closeTop + 'px');
-		jQuery(options.oSelector + ' .scrollFixIt').css('cursor','pointer');
-		jQuery(options.oSelector + ' .scrollFixIt').click(function() {
-			getObject = options.oSelector;
-			jQuery(getObject).animate({ top: "0px" },
-				{ queue: options.queue, easing: options.easing, duration: options.duration });
-			jQuery(window).unbind();
-			jQuery('.scrollFixIt').remove();
-		});
-	} 
-  	// jQuery(window).scroll(function() {
-  	// 	getObject = options.oSelector;
-   //      if(jQuery(window).scrollTop() > (jQuery(getObject).parent().offset().top) &&
-   //         (jQuery(getObject).parent().height() + jQuery(getObject).parent().position().top - 30) > (jQuery(window).scrollTop() + jQuery(getObject).height())){
-   //      	jQuery(getObject).animate({ top: (jQuery(window).scrollTop() - jQuery(getObject).parent().offset().top) + "px" }, 
-   //          { queue: options.queue, easing: options.easing, duration: options.duration });
-   //      }
-   //      else if(jQuery(window).scrollTop() < (jQuery(getObject).parent().offset().top)){
-   //      	jQuery(getObject).animate({ top: "0px" },
-   //          { queue: options.queue, easing: options.easing, duration: options.duration });
-   //      }
+	$(window).scroll(function(){
 
-	jQuery(window).scroll(function(){
-
-			getObject = options.oSelector;
+			obj= getProp.objSelected;
 			
-			console.log('imn');
-
-		    if(jQuery(window).scrollTop() > (jQuery(getObject).parent().offset().top) &&
-		       (jQuery(getObject).parent().height() + jQuery(getObject).parent().position().top - 30) > (jQuery(window).scrollTop() + jQuery(getObject).height())){
-				jQuery(getObject).css({"top":0,
-					'position':'fixed',
-					'left': jQuery(getObject).offset().left});
+		    if($(window).scrollTop() > ($(obj).parent().offset().top) &&
+		       ($(obj).parent().height() + $(obj).parent().position().top - 30) > ($(window).scrollTop() + $(obj).height())){
+				$(obj).css({"top":0,'position':'fixed','left': $(obj).offset().left});
 		    }
-		    else if(jQuery(window).scrollTop() < (jQuery(getObject).parent().offset().top)){
-					jQuery(getObject).css({"position":'relative','left':0});
+		    else if($(window).scrollTop() < ($(obj).parent().offset().top)){
+					$(obj).css({"position":'relative','left':0});
 		    }
-
 	});
-
   };
 })( jQuery );
-
